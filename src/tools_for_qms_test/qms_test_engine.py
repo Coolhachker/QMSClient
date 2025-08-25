@@ -12,7 +12,7 @@ class QMSTestEngine:
 	def run_webbrowser(self):
 		webbrowser.open('https://rt.qms.ru/')
 
-	def download_test(self, url: str, duration=15, streams=8):
+	def download_test(self, url: str, duration=1, streams=8):
 	    total_bytes = 0
 	    start_time = time.time()
 	    end_time = start_time + duration
@@ -43,7 +43,7 @@ class QMSTestEngine:
 	    download_mbps = (total_bytes * 8) / (elapsed * 1_000_000) 
 	    return round(download_mbps, 2)
 
-	def upload_test(self, url: str, duration=15, streams=4, chunk_size=1024*1024*25):
+	def upload_test(self, url: str, duration=1, streams=4, chunk_size=1024*1024*25):
 		session = requests.session()
 		total_bytes = 0
 		start_time = time.time()
@@ -86,4 +86,3 @@ class QMSTestEngine:
 
 
 qms_test_engine = QMSTestEngine()
-qms_test_engine.start_test()
