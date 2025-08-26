@@ -44,5 +44,13 @@ class SQLiteDB:
 		self.cursor.execute("SELECT ip_of_rabbitmq_server FROM configs")
 		return self.cursor.fetchone()[0]
 
+	def update_ip_of_web_server(self, ip: str):
+		self.cursor.execute("UPDATE configs SET ip_of_web_server=?", (ip, ))
+		connection.commit()
+
+	def update_ip_of_rmq_server(self, ip: str):
+		self.cursor.execute("UPDATE configs SET ip_of_rabbitmq_server=?", (ip, ))
+		connection.commit()
+
 
 sqlite_engine = SQLiteDB()
