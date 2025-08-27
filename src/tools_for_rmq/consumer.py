@@ -71,7 +71,8 @@ class Consumer:
 	def set_connection_to_rmq_server(self):
 		try:
 			self.connection = pika.BlockingConnection(self.parameters)
-		except pika.exceptions.AMQPConnectionError:
+		except pika.exceptions.AMQPConnectionError as ex:
+			print(ex)
 			raise UnSuccessConnectionToRMQServer("Невозможно подключиться к RMQ серверу.")
 
 	def basic_publish(self, properties, channel, method, result):
