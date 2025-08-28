@@ -58,7 +58,7 @@ class SQLiteDB:
 
 	def get_device_name(self):
 		self.cursor.execute("SELECT device_name FROM configs")
-		return self.cursor.fetchone[0]
+		return self.cursor.fetchone()[0]
 
 
 sqlite_engine = SQLiteDB()
