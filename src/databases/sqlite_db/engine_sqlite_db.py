@@ -13,7 +13,7 @@ class SQLiteDB:
 
 	def make_tables(self):
 		self.cursor.execute("CREATE TABLE IF NOT EXISTS uuid_of_device(uuid_code VARCHAR(10) PRIMARY KEY)")
-		self.cursor.execute("CREATE TABLE IF NOT EXISTS configs(ip_of_web_server VARCHAR(25) NOT NULL DEFAULT '127.0.0.1:8080', ip_of_rabbitmq_server VARCHAR(15) NOT NULL DEFAULT '127.0.0.1')")
+		self.cursor.execute("CREATE TABLE IF NOT EXISTS configs(ip_of_web_server VARCHAR(25) NOT NULL DEFAULT '127.0.0.1:8080', ip_of_rabbitmq_server VARCHAR(15) NOT NULL DEFAULT '127.0.0.1', device_name VARCHAR(20) NOT NULL DEFAULT 'NONE_NAME_DEVICE')")
 
 		self.cursor.execute("SELECT COUNT(*) FROM configs")
 		if self.cursor.fetchone()[0] == 0:
@@ -50,6 +50,10 @@ class SQLiteDB:
 
 	def update_ip_of_rmq_server(self, ip: str):
 		self.cursor.execute("UPDATE configs SET ip_of_rabbitmq_server=?", (ip, ))
+		connection.commit()
+
+	def update_device_name(self, device_name: str):
+		self.cursor.execute("UPDATE configs SET device_name = ?", (device_name, ))
 		connection.commit()
 
 
