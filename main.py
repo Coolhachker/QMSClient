@@ -5,8 +5,7 @@ from src.tools_for_registrate_device.engine_of_registration_device import regist
 from src.databases.sqlite_db.engine_sqlite_db import sqlite_engine
 
 from src.tools_for_rmq.consumer import Consumer
-
-from configs.Hosts import Hosts
+from src.Mobile_App.engine_of_mobile_app import ConfigApp
 
 
 def main():
@@ -27,4 +26,4 @@ def main():
 
 
 if __name__ == '__main__':
-	main()
+	ConfigApp(main).run()

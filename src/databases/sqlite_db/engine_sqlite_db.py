@@ -13,7 +13,7 @@ class SQLiteDB:
 
 	def make_tables(self):
 		self.cursor.execute("CREATE TABLE IF NOT EXISTS uuid_of_device(uuid_code VARCHAR(10) PRIMARY KEY)")
-		self.cursor.execute("CREATE TABLE IF NOT EXISTS configs(ip_of_web_server VARCHAR(25) NOT NULL DEFAULT '127.0.0.1:8080', ip_of_rabbitmq_server VARCHAR(15) NOT NULL DEFAULT '127.0.0.1', device_name VARCHAR(20) NOT NULL DEFAULT 'NONE_NAME_DEVICE')")
+		self.cursor.execute("CREATE TABLE IF NOT EXISTS configs(ip_of_web_server VARCHAR(25) NOT NULL DEFAULT '127.0.0.1:8080', ip_of_rabbitmq_server VARCHAR(15) NOT NULL DEFAULT '127.0.0.1', device_name VARCHAR(20) NOT NULL DEFAULT 'NONE_NAME_DEVICE', duration TINYINT NOT NULL DEFAULT 15)")
 
 		self.cursor.execute("SELECT COUNT(*) FROM configs")
 		if self.cursor.fetchone()[0] == 0:
@@ -58,6 +58,10 @@ class SQLiteDB:
 
 	def get_device_name(self):
 		self.cursor.execute("SELECT device_name FROM configs")
+		return self.cursor.fetchone()[0]
+
+	def get_duration(self):
+		self.cursor.execute("SELECT duration FROM configs")
 		return self.cursor.fetchone()[0]
 
 
