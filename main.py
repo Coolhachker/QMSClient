@@ -22,7 +22,7 @@ def main():
 	if response == 200:
 		sqlite_engine.create_a_new_uuid(uuid_code)
 
-	consumer = Consumer(Hosts.rmq_server)
+	consumer = Consumer(sqlite_engine.get_ip_of_rmq_sever())
 
 
 
