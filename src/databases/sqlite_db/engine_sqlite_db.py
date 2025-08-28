@@ -56,5 +56,9 @@ class SQLiteDB:
 		self.cursor.execute("UPDATE configs SET device_name = ?", (device_name, ))
 		connection.commit()
 
+	def get_device_name(self):
+		self.cursor.execute("SELECT device_name FROM configs")
+		return self.cursor.fetchone[0]
+
 
 sqlite_engine = SQLiteDB()
