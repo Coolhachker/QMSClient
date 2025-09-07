@@ -9,7 +9,15 @@ from src.databases.sqlite_db.engine_sqlite_db import sqlite_engine
 
 class QMSTestEngine:
 	def __init__(self):
-		pass
+		self.headers: dict = {
+			'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0',
+			'accept': 'application/json, text/plain, */*',
+			'origin': 'https://www.qms.ru',
+			'connection': 'keep-alive',
+			'sec-ch-ua-platform': 'Windows',
+			'sec-fetch-mode': 'cors',
+			'sec-fetch-site': 'same-site'
+		}
 
 	def run_webbrowser(self):
 		webbrowser.open('https://rt.qms.ru/')
@@ -24,7 +32,7 @@ class QMSTestEngine:
 	        nonlocal total_bytes
 	        while time.time() < end_time:
 	            try:
-	                with session.get(url, stream=True) as r:
+	                with session.get(url, headers=self.headers, stream=True) as r:
 	                    for chunk in r.iter_content(chunk_size=1024 * 1024):
 	                        if time.time() >= end_time:
 	                            break
@@ -56,7 +64,7 @@ class QMSTestEngine:
 			nonlocal total_bytes
 			while time.time() < end_time:
 				try:
-				    response = session.post(url, data=data)
+				    response = session.post(url, headers=self.headers, data=data)
 				    if response.ok:
 				        total_bytes += chunk_size
 				except:

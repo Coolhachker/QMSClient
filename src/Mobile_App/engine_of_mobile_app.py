@@ -9,6 +9,12 @@ from kivy.metrics import dp
 # Импортируем ваш класс для работы с БД
 from src.databases.sqlite_db.engine_sqlite_db import sqlite_engine
 
+from src.tools_for_registrate_device.start_reg import reg
+from src.tools_for_rmq.consumer import Consumer
+
+from threading import Thread
+
+
 # Устанавливаем белый фон
 Window.clearcolor = (1, 1, 1, 1)
 
@@ -72,7 +78,7 @@ class ConfigInput(TextInput):
                 print(f"Ошибка сохранения значения: {e}")
 
 class MainAppLayout(BoxLayout):
-    def __init__(self, registration_function, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
         self.padding = [dp(30), dp(20)]
@@ -80,7 +86,6 @@ class MainAppLayout(BoxLayout):
         
         # Инициализируем движок базы данных
         self.db_engine = sqlite_engine
-        self.registration_function = registration_function
         
         self.setup_ui()
     
@@ -220,8 +225,11 @@ class MainAppLayout(BoxLayout):
             print(f"Device Name: {device_name}")
             
             # Здесь должна быть ваша логика регистрации/подключения
-            self.registration_function()
+            reg()
             self.show_registration_status("Устройство успешно зарегистрировано!")
+            consumer = Consumer(sqlite_engine.get_ip_of_rmq_sever())
+            thread = Thread(target=consumer.channel.start_consuming, daemon=True)
+            thread.start()
             
         except Exception as e:
             print(f"Ошибка при регистрации: {e}")
@@ -230,17 +238,11 @@ class MainAppLayout(BoxLayout):
     def show_registration_status(self, message):
         """Показать статус регистрации"""
         self.register_button.text = message
-        # Через 3 секунды вернуть исходный текст
-        from kivy.clock import Clock
-        Clock.schedule_once(self.reset_button_text, 3)
     
     def reset_button_text(self, dt):
         """Восстановление исходного текста кнопки"""
         self.register_button.text = 'Зарегистрировать устройство'
 
 class ConfigApp(App):
-    def __init__(self, registration_function, **kwargs):
-        super().__init__(**kwargs)
-        self.registration_function = registration_function
     def build(self):
-        return MainAppLayout(self.registration_function)
+        return MainAppLayout()
