@@ -40,8 +40,6 @@ class Consumer:
 
 		properties = pika.BasicProperties(delivery_mode=pika.DeliveryMode.Persistent)
 
-		self.channel.start_consuming()
-
 	def confirm_the_request(self, channel: BlockingChannel, method: Basic.Deliver, properties: BasicProperties, body: bytes):
 		message = json.loads(body.decode())
 		result: str = None
