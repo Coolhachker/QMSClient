@@ -18,6 +18,9 @@ from threading import Thread
 # Устанавливаем белый фон
 Window.clearcolor = (1, 1, 1, 1)
 
+# Версия приложения
+APP_VERSION = "1.0.0"
+
 class ConfigInput(TextInput):
     def __init__(self, setting_type, db_engine, **kwargs):
         super().__init__(**kwargs)
@@ -99,16 +102,36 @@ class MainAppLayout(BoxLayout):
             padding=[dp(0), dp(10)]
         )
         
+        # Верхняя панель с заголовком и версией
+        header_container = BoxLayout(
+            orientation='horizontal',
+            size_hint_y=None,
+            height=dp(45),
+            spacing=dp(10)
+        )
+        
         # Заголовок
         title = Label(
             text='Настройки устройства',
             color=(0.2, 0.2, 0.2, 1),
-            size_hint_y=None,
-            height=dp(45),
+            size_hint_x=0.7,
             font_size='24sp',
-            bold=True
+            bold=True,
+            halign='left'
         )
-        main_container.add_widget(title)
+        header_container.add_widget(title)
+        
+        # Версия приложения (справа)
+        version_label = Label(
+            text=f'v{APP_VERSION}',
+            color=(0.5, 0.5, 0.5, 1),
+            size_hint_x=0.3,
+            font_size='14sp',
+            halign='right'
+        )
+        header_container.add_widget(version_label)
+        
+        main_container.add_widget(header_container)
         
         # Контейнер для полей ввода
         input_container = BoxLayout(
